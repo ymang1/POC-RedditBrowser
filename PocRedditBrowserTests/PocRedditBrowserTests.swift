@@ -10,6 +10,8 @@ import XCTest
 
 class PocRedditBrowserTests: XCTestCase {
 
+    let redditChildDatamodel = RedditChildrenDataModel(title: "[OC] I had such an amazing response from my embroideries yesterday! Here are some others", author: "Sa1tyWaffles", thumbnail: "https://b.thumbs.redditmedia.com/In4ZcEmgTpa-8YRF-SjKWKv68wZ9mSk-Mw6e5KaGBOg.jpg", url: "https://www.reddit.com/gallery/trp7or", created: 1648591604)
+    
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -30,4 +32,21 @@ class PocRedditBrowserTests: XCTestCase {
         }
     }
 
+    // test Reddit Model
+    func testRedditModel() {
+        let redditChildModel = RedditChildrenModel(kind: "t3", data: redditChildDatamodel)
+        let redditDataModel = RedditDataModel(children: [redditChildModel])
+        
+        XCTAssertEqual("Sa1tyWaffles", redditDataModel.children?.first?.data?.author)
+        XCTAssertNotNil(redditDataModel.children?.first?.kind, "t4")
+    }
+    
+    // test Reddit detail view
+    func testRedditDetailView() {
+        let redditDetailViewController = RedditDetailViewController()
+        redditDetailViewController.redditChildrenModel = RedditChildrenModel(kind: "t3", data: redditChildDatamodel)
+        
+        XCTAssertNotEqual("Sa1tyWaffles", redditDetailViewController.redditChildrenModel?.data?.title)
+        XCTAssertEqual("https://www.reddit.com/gallery/trp7or", redditDetailViewController.redditChildrenModel?.data?.url)
+    }
 }
